@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js",
-    "start":"node src/index.js"
+    "dev": "yarn build && nodemon src/index.js",
+    "start": "yarn build && node build/index.js",
+    "build": "babel src -d build"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,12 @@
   "bugs": {
     "url": "https://github.com/bajpai244/apac_certificate_generator/issues"
   },
-  "homepage": "https://github.com/bajpai244/apac_certificate_generator#readme"
+  "homepage": "https://github.com/bajpai244/apac_certificate_generator#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.16.0"
+  }
 }
