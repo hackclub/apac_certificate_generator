@@ -1,0 +1,27 @@
+{
+  "name": "apac_certificate_generator",
+  "version": "1.0.0",
+  "description": "Generates Certificates for Hack Club APAC leads",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js",
+    "start":"node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bajpai244/apac_certificate_generator.git"
+  },
+  "keywords": [
+    "APAC",
+    "Hack",
+    "Club",
+    "APAC"
+  ],
+  "author": "Harsh Bajpai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bajpai244/apac_certificate_generator/issues"
+  },
+  "homepage": "https://github.com/bajpai244/apac_certificate_generator#readme"
+}

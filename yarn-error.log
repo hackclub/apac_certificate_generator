@@ -1,0 +1,60 @@
+Arguments: 
+  /opt/homebrew/Cellar/node/15.12.0/bin/node /opt/homebrew/bin/yarn add pdf-lub
+
+PATH: 
+  /opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/harshbajpai/.cargo/bin:/Users/harshbajpai/Library/Android/sdk/emulator:/Users/harshbajpai/Library/Android/sdk/tools:/Users/harshbajpai/Library/Android/sdk/tools/bin:/Users/harshbajpai/Library/Android/sdk/platform-tools
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  15.12.0
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/pdf-lub: Not found
+      at Request.params.callback [as _callback] (/opt/homebrew/lib/node_modules/yarn/lib/cli.js:66988:18)
+      at Request.self.callback (/opt/homebrew/lib/node_modules/yarn/lib/cli.js:140662:22)
+      at Request.emit (node:events:369:20)
+      at Request.<anonymous> (/opt/homebrew/lib/node_modules/yarn/lib/cli.js:141634:10)
+      at Request.emit (node:events:369:20)
+      at IncomingMessage.<anonymous> (/opt/homebrew/lib/node_modules/yarn/lib/cli.js:141556:12)
+      at Object.onceWrapper (node:events:475:28)
+      at IncomingMessage.emit (node:events:381:22)
+      at endReadableNT (node:internal/streams/readable:1307:12)
+      at processTicksAndRejections (node:internal/process/task_queues:81:21)
+
+npm manifest: 
+  {
+    "name": "apac_certificate_generator",
+    "version": "1.0.0",
+    "description": "Generates Certificates for Hack Club APAC leads",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/bajpai244/apac_certificate_generator.git"
+    },
+    "keywords": [
+      "APAC",
+      "Hack",
+      "Club",
+      "APAC"
+    ],
+    "author": "Harsh Bajpai",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/bajpai244/apac_certificate_generator/issues"
+    },
+    "homepage": "https://github.com/bajpai244/apac_certificate_generator#readme"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
