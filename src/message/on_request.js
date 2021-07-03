@@ -160,6 +160,7 @@ module.exports = (user_id) => ({
         {
           type: 'button',
           action_id: 'submit',
+          style: 'primary',
           text: {
             type: 'plain_text',
             text: 'create_certificate',

@@ -11,7 +11,7 @@ const { WebClient, LogLevel } = require('@slack/web-api');
 const is_authenticated = require('../lib/auth');
 const { person_to_sign } = require('../lib/data');
 
-const { on_request, sign } = require('./message/index');
+const { on_request, sign, on_sign } = require('./message/index');
 const path = require('path');
 
 const oauth_token = process.env.OAUTH_TOKEN;
@@ -48,7 +48,6 @@ app.event('app_mention', async ({ event, context, client, say }) => {
     channel: event.channel,
     user: user_id,
     ...on_request(user_id),
-    text: 'saadasd',
     thread_ts: event.ts,
   });
 });
@@ -75,6 +74,10 @@ app.action('submit', async ({ body, context, ack, say }) => {
 
   const name = values.name.name.value;
   const university = values.university.university.value;
+  const month = values.month.month.value;
+  const year = values.year.year.value;
+
+  console.log(month, year);
 
   const certificate_reciever =
     values.certificate_reciever.user_select.selected_users[0];
@@ -82,9 +85,9 @@ app.action('submit', async ({ body, context, ack, say }) => {
 
   const res = await client.files.upload({
     channels: channel_id,
-    file: fs.createReadStream(path.resolve(__dirname, '../husky.png')),
+    file: fs.createReadStream(path.resolve(__dirname, '../dummy.txt')),
     title: 'Certificate',
-    filename: 'husky.png',
+    filename: 'dummy.txt',
   });
 
   if (res.ok) {
@@ -95,14 +98,25 @@ app.action('submit', async ({ body, context, ack, say }) => {
 
   client.chat.postMessage({
     channel: person_to_sign,
-    ...sign(person_to_sign, permalink),
+    ...sign(person_to_sign, certificate_reciever, permalink),
   });
 
   await ack();
 });
 
 app.action('sign', async ({ body, context, ack, say }) => {
-  console.log('signed');
+  const { id: user_id } = body.user;
+  const { channel_id, thread_ts } = body.container;
+
+  const person_to_recieve = body.actions.value;
+
+  console.log(body);
+
+  client.chat.postMessage({
+    channel: channel_id,
+    ...on_sign(user_id, actions.value),
+    thread_ts: thread_ts,
+  });
   await ack();
 });
 

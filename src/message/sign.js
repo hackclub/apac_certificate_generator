@@ -25,7 +25,7 @@ module.exports = (user_id, person_to_reciever, file_link) => ({
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `*Hey <@${user_id}>! I bring a request for a new certificate for ${person_to_reciever}`,
+        text: `*Hey <@${user_id}>! I bring a request for a new certificate for <@${person_to_reciever}>`,
       },
     },
     {
@@ -49,7 +49,7 @@ module.exports = (user_id, person_to_reciever, file_link) => ({
             text: 'sign!',
             emoji: true,
           },
-          value: 'sign',
+          value: person_to_reciever,
           style: 'primary',
         },
       ],
