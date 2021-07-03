@@ -12,7 +12,15 @@ const { WebClient, LogLevel } = require('@slack/web-api');
 const is_authenticated = require('../lib/auth');
 const { person_to_sign, auth_people } = require('../lib/data');
 
-const { on_request, sign, on_sign, on_decline } = require('./message/index');
+const {
+  on_request,
+  sign,
+  on_sign,
+  on_decline,
+  on_sign_auth,
+  on_decline_auth,
+  certificate_reciever,
+} = require('./message/index');
 
 const certificate_generator = require('./certificate_generator');
 
@@ -130,12 +138,6 @@ app.action('sign', async ({ body, context, ack, say }) => {
 
   await certificate_generator(name, university, gender, month, year, true);
 
-  client.chat.postMessage({
-    channel: channel_id,
-    ...on_sign(user_id, certificate_reciever),
-    thread_ts: thread_ts,
-  });
-
   const res = await client.files.upload({
     channels: `${channel_id},${certificate_reciever},${auth_people[0]}`,
     file: fs.createReadStream(path.resolve(__dirname, '../output.pdf')),
@@ -145,28 +147,50 @@ app.action('sign', async ({ body, context, ack, say }) => {
 
   if (res.ok) {
     // if something goes wrong while file upload
+    client.chat.postMessage({
+      channel: channel_id,
+      text: 'Something went wrong during file upload for certificate of user, please contach Harsh Bajpai',
+    });
   }
+
+  client.chat.postMessage({
+    channel: channel_id,
+    ...on_sign(user_id, certificate_reciever),
+    thread_ts: thread_ts,
+  });
+
+  client.chat.postMessage({
+    channel: certificate_reciever,
+    ...certificate_reciever(certificate_reciever),
+  });
+
+  client.chat.postMessage({
+    channel: auth_people[0],
+    ...on_sign_auth(certificate_reciever),
+  });
 
   await ack();
 });
 
 app.action('decline', async ({ body, context, ack, say }) => {
-  app.action('sign', async ({ body, context, ack, say }) => {
-    const { id: user_id } = body.user;
-    const { channel_id, thread_ts } = body.container;
+  const { id: user_id } = body.user;
+  const { channel_id, thread_ts } = body.container;
 
-    const str_data = body.actions[0].value;
+  const str_data = body.actions[0].value;
 
-    const parsed_data = JSON.parse(str_data);
+  const parsed_data = JSON.parse(str_data);
 
-    const { certificate_reciever } = parsed_data;
+  const { certificate_reciever } = parsed_data;
 
-    client.chat.postMessage({
-      channel: channel_id,
-      ...on_decline(user_id),
-      thread_ts: thread_ts,
-    });
-    await ack();
+  client.chat.postMessage({
+    channel: channel_id,
+    ...on_decline(user_id),
+    thread_ts: thread_ts,
+  });
+
+  client.chat.postMessage({
+    channel: channel_id,
+    ...on_decline_auth(certificate_reciever),
   });
 
   await ack();

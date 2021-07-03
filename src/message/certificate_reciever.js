@@ -14,7 +14,7 @@ module.exports = (certificate_reciever) => ({
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `*Hey There!!!\nBelow is your certificate from Hack Club APAC!,Reach out to <@${auth_people[0]}> if you face any problem`,
+        text: `*Hey <@${certificate_reciever}>!!!*\nBelow is your certificate from Hack Club APAC!,Reach out to <@${auth_people[0]}> if you face any problem`,
       },
     },
   ],
