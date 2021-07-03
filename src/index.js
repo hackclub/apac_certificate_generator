@@ -3,12 +3,16 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
+const fs = require('fs');
+
 const { App } = require('@slack/bolt');
 const { WebClient, LogLevel } = require('@slack/web-api');
 
 const is_authenticated = require('../lib/auth');
+const { person_to_sing } = require('../lib/data');
 
 const on_request = require('./message/on_request');
+const path = require('path');
 
 const oauth_token = process.env.OAUTH_TOKEN;
 const app_token = process.env.APP_TOKEN;
@@ -31,7 +35,7 @@ const app = new App({
 app.event('app_mention', async ({ event, context, client, say }) => {
   const { user: user_id } = event;
 
-  if (!is_authenticated(user_id)) {
+  if (is_authenticated(user_id)) {
     client.chat.postMessage({
       channel: event.channel,
       text: 'Fallback',
@@ -64,7 +68,7 @@ app.action('submit', async ({ body, context, ack, say }) => {
 
   const { id: requester_id } = body.user;
 
-  if (!is_authenticated(requester_id)) {
+  if (is_authenticated(requester_id)) {
     ack();
     return;
   }
@@ -77,6 +81,18 @@ app.action('submit', async ({ body, context, ack, say }) => {
   const certificate_reciever =
     values.certificate_reciever.user_select.selected_users[0];
   const gender = values.gender.pronoun.selected_option.value;
+  console.log('hey here');
+
+  const res = await client.files.upload({
+    channels: channel_id,
+    file: fs.createReadStream(path.resolve(__dirname, '../husky.png')),
+    title: 'Certificate',
+    filename: 'husky.png',
+  });
+
+  if (res.ok) {
+    //
+  }
 
   await ack();
 });
