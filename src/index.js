@@ -10,7 +10,7 @@ const { App } = require('@slack/bolt');
 const { WebClient, LogLevel } = require('@slack/web-api');
 
 const is_authenticated = require('../lib/auth');
-const { person_to_sign } = require('../lib/data');
+const { person_to_sign, auth_people } = require('../lib/data');
 
 const { on_request, sign, on_sign, on_decline } = require('./message/index');
 
@@ -92,6 +92,8 @@ app.action('submit', async ({ body, context, ack, say }) => {
     certificate_reciever,
   });
 
+  console.log(str_data);
+
   await certificate_generator(name, university, gender, month, year);
 
   const res = await client.files.upload({
@@ -119,15 +121,23 @@ app.action('sign', async ({ body, context, ack, say }) => {
   const { id: user_id } = body.user;
   const { channel_id, thread_ts } = body.container;
 
-  const str_data = body.actions.value;
-  const data = JSON.parse();
+  const str_data = body.actions[0].value;
 
-  const { name, university, gender, month, year, certificate_reciever } = data;
+  const parsed_data = JSON.parse(str_data);
+
+  const { name, university, gender, month, year, certificate_reciever } =
+    parsed_data;
 
   await certificate_generator(name, university, gender, month, year, true);
 
+  client.chat.postMessage({
+    channel: channel_id,
+    ...on_sign(user_id, certificate_reciever),
+    thread_ts: thread_ts,
+  });
+
   const res = await client.files.upload({
-    channels: channel_id,
+    channels: `${channel_id},${certificate_reciever},${auth_people[0]}`,
     file: fs.createReadStream(path.resolve(__dirname, '../output.pdf')),
     title: 'Certificate',
     filename: 'certificate.pdf',
@@ -137,11 +147,6 @@ app.action('sign', async ({ body, context, ack, say }) => {
     // if something goes wrong while file upload
   }
 
-  client.chat.postMessage({
-    channel: channel_id,
-    ...on_sign(user_id, certificate_reciever),
-    thread_ts: thread_ts,
-  });
   await ack();
 });
 
@@ -150,7 +155,11 @@ app.action('decline', async ({ body, context, ack, say }) => {
     const { id: user_id } = body.user;
     const { channel_id, thread_ts } = body.container;
 
-    const person_to_recieve = body.actions.value;
+    const str_data = body.actions[0].value;
+
+    const parsed_data = JSON.parse(str_data);
+
+    const { certificate_reciever } = parsed_data;
 
     client.chat.postMessage({
       channel: channel_id,

@@ -7,16 +7,33 @@ const fetch = require('node-fetch');
 const path = require('path');
 
 const { monthNames } = require('../lib/data');
-const { retryPolicies } = require('@slack/web-api');
 
-const pdf_generate = async ({
-  full_name = `Lead Name`,
-  university_name = 'University Name',
+const pdf_generate = async (
+  full_name = 'Lead Name',
+  university_name = 'Some University',
   gender = 'them',
   app_mnth = 'May 3',
   app_year = '1651',
-  with_sign = false,
-}) => {
+  with_sign = false
+) => {
+  try {
+    fs.unlinkSync(path.resolve(__dirname, '../output.pdf'), (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      //file removed
+    });
+
+    fs.unlinkSync(path.resolve(__dirname, '../yay1.pdf'), (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      //file removed
+    });
+  } catch {}
+
   const date = new Date();
   const date_time = `${date.getDate()} ${
     monthNames[date.getMonth()]
@@ -204,6 +221,6 @@ const pdf_generate = async ({
   fs.writeFileSync('./output.pdf', pdfBytes);
 };
 
-pdf_generate({});
+// pdf_generate({});
 
 module.exports = pdf_generate;
