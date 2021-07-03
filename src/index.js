@@ -11,7 +11,7 @@ const { WebClient, LogLevel } = require('@slack/web-api');
 const is_authenticated = require('../lib/auth');
 const { person_to_sign } = require('../lib/data');
 
-const { on_request, sign, on_sign } = require('./message/index');
+const { on_request, sign, on_sign, on_decline } = require('./message/index');
 const path = require('path');
 
 const oauth_token = process.env.OAUTH_TOKEN;
@@ -110,17 +110,28 @@ app.action('sign', async ({ body, context, ack, say }) => {
 
   const person_to_recieve = body.actions.value;
 
-  console.log(body);
-
   client.chat.postMessage({
     channel: channel_id,
-    ...on_sign(user_id, actions.value),
+    ...on_sign(user_id, person_to_recieve),
     thread_ts: thread_ts,
   });
   await ack();
 });
 
 app.action('decline', async ({ body, context, ack, say }) => {
-  console.log('declined');
+  app.action('sign', async ({ body, context, ack, say }) => {
+    const { id: user_id } = body.user;
+    const { channel_id, thread_ts } = body.container;
+
+    const person_to_recieve = body.actions.value;
+
+    client.chat.postMessage({
+      channel: channel_id,
+      ...on_decline(user_id),
+      thread_ts: thread_ts,
+    });
+    await ack();
+  });
+
   await ack();
 });
