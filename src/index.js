@@ -1,10 +1,12 @@
 /** @format */
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const { App } = require('@slack/bolt');
 const { WebClient, LogLevel } = require('@slack/web-api');
 
-const dotenv = require('dotenv');
-dotenv.config();
+const is_authenticated = require('../lib/auth');
 
 const on_request = require('./message/on_request');
 
@@ -29,7 +31,7 @@ const app = new App({
 app.event('app_mention', async ({ event, context, client, say }) => {
   const { user: user_id } = event;
 
-  if (user_id != 'U010XUNLX40') {
+  if (!is_authenticated(user_id)) {
     client.chat.postMessage({
       channel: event.channel,
       text: 'Fallback',
@@ -61,6 +63,12 @@ app.action('submit', async ({ body, context, ack, say }) => {
   const values = body.state.values;
 
   const { id: requester_id } = body.user;
+
+  if (!is_authenticated(requester_id)) {
+    ack();
+    return;
+  }
+
   const { channel_id, thread_ts } = body.container;
 
   const name = values.name.name.value;
