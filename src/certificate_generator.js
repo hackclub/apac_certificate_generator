@@ -6,15 +6,30 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 const path = require('path');
 
+const { monthNames } = require('../lib/data');
+const { retryPolicies } = require('@slack/web-api');
+
 const pdf_generate = async ({
-  date_time = 'July 1,2021',
   full_name = `Lead Name`,
   university_name = 'University Name',
-  gender = 'their',
-  pronoun = 'they',
-  app_mnth = 'Mayer',
-  app_year = '3000',
+  gender = 'them',
+  app_mnth = 'May 3',
+  app_year = '1651',
+  with_sign = false,
 }) => {
+  const date = new Date();
+  const date_time = `${date.getDate()} ${
+    monthNames[date.getMonth()]
+  }, ${date.getFullYear()}`;
+
+  const pr_map = {
+    he: 'his',
+    she: 'her',
+    them: 'their',
+  };
+
+  const pronoun = pr_map[gender];
+
   const pdfDoc = await PDFDocument.create();
   pdfDoc.registerFontkit(fontkit);
   const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
@@ -141,18 +156,20 @@ const pdf_generate = async ({
     lineHeight: line_height,
   });
 
-  page.drawImage(sign_img, {
-    x: 100,
-    y: curr_height(100),
-    width: flag_dim.width,
-    height: flag_dim.height,
-  });
+  with_sign
+    ? page.drawImage(sign_img, {
+        x: 100,
+        y: curr_height(100),
+        width: flag_dim.width,
+        height: flag_dim.height,
+      })
+    : null;
 
   const sign_name = 'Athul Blesson';
 
   page.drawText(sign_name, {
     x: 100,
-    y: curr_height(20),
+    y: curr_height(with_sign ? 20 : 80),
     font: timesRomanFont,
     size: size_normal,
     maxWidth: max_width,
@@ -183,7 +200,10 @@ const pdf_generate = async ({
 
   // Save the PDFDocument and write it to a file
   const pdfBytes = await pdfDoc.save();
-  fs.writeFileSync('yay1.pdf', pdfBytes);
+  fs.writeFileSync('./yay1.pdf', pdfBytes);
+  fs.writeFileSync('./output.pdf', pdfBytes);
 };
 
 pdf_generate({});
+
+module.exports = pdf_generate;

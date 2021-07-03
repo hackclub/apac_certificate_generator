@@ -2,7 +2,7 @@
 
 // This is sent when someone authorized requests for a server
 
-module.exports = (user_id, person_to_reciever, file_link) => ({
+module.exports = (user_id, person_to_reciever, file_link, str_data) => ({
   type: 'modal',
   submit: {
     type: 'plain_text',
@@ -49,7 +49,7 @@ module.exports = (user_id, person_to_reciever, file_link) => ({
             text: 'sign!',
             emoji: true,
           },
-          value: person_to_reciever,
+          value: str_data,
           style: 'primary',
         },
       ],
@@ -65,7 +65,7 @@ module.exports = (user_id, person_to_reciever, file_link) => ({
             text: 'decline!',
             emoji: true,
           },
-          value: 'decline',
+          value: str_data,
           style: 'danger',
         },
       ],

@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const fs = require('fs');
+const path = require('path');
 
 const { App } = require('@slack/bolt');
 const { WebClient, LogLevel } = require('@slack/web-api');
@@ -12,7 +13,8 @@ const is_authenticated = require('../lib/auth');
 const { person_to_sign } = require('../lib/data');
 
 const { on_request, sign, on_sign, on_decline } = require('./message/index');
-const path = require('path');
+
+const certificate_generator = require('./certificate_generator');
 
 const oauth_token = process.env.OAUTH_TOKEN;
 const app_token = process.env.APP_TOKEN;
@@ -76,18 +78,27 @@ app.action('submit', async ({ body, context, ack, say }) => {
   const university = values.university.university.value;
   const month = values.month.month.value;
   const year = values.year.year.value;
-
-  console.log(month, year);
+  const gender = values.gender.pronoun.selected_option.value;
 
   const certificate_reciever =
     values.certificate_reciever.user_select.selected_users[0];
-  const gender = values.gender.pronoun.selected_option.value;
+
+  const str_data = JSON.stringify({
+    name,
+    university,
+    gender,
+    month,
+    year,
+    certificate_reciever,
+  });
+
+  await certificate_generator(name, university, gender, month, year);
 
   const res = await client.files.upload({
     channels: channel_id,
-    file: fs.createReadStream(path.resolve(__dirname, '../dummy.txt')),
+    file: fs.createReadStream(path.resolve(__dirname, '../output.pdf')),
     title: 'Certificate',
-    filename: 'dummy.txt',
+    filename: 'certificate.pdf',
   });
 
   if (res.ok) {
@@ -98,7 +109,7 @@ app.action('submit', async ({ body, context, ack, say }) => {
 
   client.chat.postMessage({
     channel: person_to_sign,
-    ...sign(person_to_sign, certificate_reciever, permalink),
+    ...sign(person_to_sign, certificate_reciever, permalink, str_data),
   });
 
   await ack();
@@ -108,11 +119,27 @@ app.action('sign', async ({ body, context, ack, say }) => {
   const { id: user_id } = body.user;
   const { channel_id, thread_ts } = body.container;
 
-  const person_to_recieve = body.actions.value;
+  const str_data = body.actions.value;
+  const data = JSON.parse();
+
+  const { name, university, gender, month, year, certificate_reciever } = data;
+
+  await certificate_generator(name, university, gender, month, year, true);
+
+  const res = await client.files.upload({
+    channels: channel_id,
+    file: fs.createReadStream(path.resolve(__dirname, '../output.pdf')),
+    title: 'Certificate',
+    filename: 'certificate.pdf',
+  });
+
+  if (res.ok) {
+    // if something goes wrong while file upload
+  }
 
   client.chat.postMessage({
     channel: channel_id,
-    ...on_sign(user_id, person_to_recieve),
+    ...on_sign(user_id, certificate_reciever),
     thread_ts: thread_ts,
   });
   await ack();
