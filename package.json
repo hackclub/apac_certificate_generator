@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "yarn build && nodemon src/index.js",
     "start": "yarn build && node build/index.js",
-    "build": "babel src -d build"
+    "build": "babel src -d build",
+    "prod": "node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,9 @@
     "babel-preset-env": "^1.7.0"
   },
   "dependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
+    "babel-polyfill": "^6.26.0",
+    "node-fetch": "^2.6.1",
     "pdf-lib": "^1.16.0"
   }
 }
