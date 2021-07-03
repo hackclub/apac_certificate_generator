@@ -4,6 +4,7 @@ const { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
 const fontkit = require('@pdf-lib/fontkit');
 const fs = require('fs');
 const fetch = require('node-fetch');
+const path = require('path');
 
 const pdf_generate = async ({
   date_time = 'July 1,2021',
@@ -23,6 +24,12 @@ const pdf_generate = async ({
 
   const flag_img = await pdfDoc.embedPng(flag_img_bytes);
   const flag_dim = flag_img.scale(0.3);
+
+  const sign_img_file = fs.readFileSync(path.resolve(__dirname, '../sign.png'));
+  const sign_img_bytes = await sign_img_file.buffer;
+
+  const sign_img = await pdfDoc.embedPng(sign_img_bytes);
+  const sign_dim = flag_img.scale(0.2);
 
   // Add a page to the PDFDocument and draw some text
   const page = pdfDoc.addPage();
@@ -128,6 +135,46 @@ const pdf_generate = async ({
   page.drawText(text_6, {
     x: 100,
     y: curr_height(80),
+    font: timesRomanFont,
+    size: size_normal,
+    maxWidth: max_width,
+    lineHeight: line_height,
+  });
+
+  page.drawImage(sign_img, {
+    x: 100,
+    y: curr_height(100),
+    width: flag_dim.width,
+    height: flag_dim.height,
+  });
+
+  const sign_name = 'Athul Blesson';
+
+  page.drawText(sign_name, {
+    x: 100,
+    y: curr_height(20),
+    font: timesRomanFont,
+    size: size_normal,
+    maxWidth: max_width,
+    lineHeight: line_height,
+  });
+
+  const sign_desig = 'Asia Pacific Director, Hack Club';
+
+  page.drawText(sign_desig, {
+    x: 100,
+    y: curr_height(20),
+    font: timesRomanFont,
+    size: size_normal,
+    maxWidth: max_width,
+    lineHeight: line_height,
+  });
+
+  const sign_email = 'athul@hackclub.com';
+
+  page.drawText(sign_email, {
+    x: 100,
+    y: curr_height(20),
     font: timesRomanFont,
     size: size_normal,
     maxWidth: max_width,
