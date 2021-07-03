@@ -32,7 +32,10 @@
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",
+    "@slack/bolt": "^3.4.0",
+    "@slack/web-api": "^6.2.4",
     "babel-polyfill": "^6.26.0",
+    "dotenv": "^10.0.0",
     "node-fetch": "^2.6.1",
     "pdf-lib": "^1.16.0"
   }
