@@ -64,6 +64,38 @@ module.exports = (user_id) => ({
       },
     },
     {
+      type: 'input',
+      block_id: 'month',
+      label: {
+        type: 'plain_text',
+        text: 'enter the month when person applied',
+      },
+      element: {
+        type: 'plain_text_input',
+        action_id: 'month',
+        placeholder: {
+          type: 'plain_text',
+          text: 'enter the month when person applied',
+        },
+      },
+    },
+    {
+      type: 'input',
+      block_id: 'year',
+      label: {
+        type: 'plain_text',
+        text: 'enter the year when person applied',
+      },
+      element: {
+        type: 'plain_text_input',
+        action_id: 'year',
+        placeholder: {
+          type: 'plain_text',
+          text: 'enter the year when person applied',
+        },
+      },
+    },
+    {
       type: 'section',
       block_id: 'certificate_reciever',
       text: {

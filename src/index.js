@@ -9,9 +9,9 @@ const { App } = require('@slack/bolt');
 const { WebClient, LogLevel } = require('@slack/web-api');
 
 const is_authenticated = require('../lib/auth');
-const { person_to_sing } = require('../lib/data');
+const { person_to_sign } = require('../lib/data');
 
-const on_request = require('./message/on_request');
+const { on_request, sign } = require('./message/index');
 const path = require('path');
 
 const oauth_token = process.env.OAUTH_TOKEN;
@@ -62,8 +62,6 @@ app.action('user_select', async ({ body, context, ack, say }) => {
 });
 
 app.action('submit', async ({ body, context, ack, say }) => {
-  //   console.log(body.state.values);
-
   const values = body.state.values;
 
   const { id: requester_id } = body.user;
@@ -81,7 +79,6 @@ app.action('submit', async ({ body, context, ack, say }) => {
   const certificate_reciever =
     values.certificate_reciever.user_select.selected_users[0];
   const gender = values.gender.pronoun.selected_option.value;
-  console.log('hey here');
 
   const res = await client.files.upload({
     channels: channel_id,
@@ -91,8 +88,25 @@ app.action('submit', async ({ body, context, ack, say }) => {
   });
 
   if (res.ok) {
-    //
+    // if something goes wrong while file upload
   }
 
+  const { permalink } = res.file;
+
+  client.chat.postMessage({
+    channel: person_to_sign,
+    ...sign(person_to_sign, permalink),
+  });
+
+  await ack();
+});
+
+app.action('sign', async ({ body, context, ack, say }) => {
+  console.log('signed');
+  await ack();
+});
+
+app.action('decline', async ({ body, context, ack, say }) => {
+  console.log('declined');
   await ack();
 });
