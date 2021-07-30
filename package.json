@@ -8,7 +8,8 @@
     "dev": "yarn build && nodemon src/index.js",
     "start": "yarn build && node build/index.js",
     "build": "babel src -d build",
-    "prod": "node src/index.js"
+    "prod": "node src/index.js",
+    "ptest": "node src/test_gen.js && open output.pdf"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "babel-polyfill": "^6.26.0",
     "dotenv": "^10.0.0",
     "node-fetch": "^2.6.1",
-    "pdf-lib": "^1.16.0"
+    "pdf-lib": "^1.16.0",
+    "tape": "^5.3.0"
   }
 }
