@@ -119,3 +119,6 @@ dist
 
 #build file of the babel transpile for the project
 build
+
+## Output file
+output.pdf
