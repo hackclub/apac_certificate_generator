@@ -5,7 +5,6 @@ dotenv.config();
 
 const { App } = require("@slack/bolt");
 const { WebClient, LogLevel } = require("@slack/web-api");
-
 const { on_mention, on_submit, on_sign } = require("../lib/utlis/index");
 const on_decline = require("../lib/utlis/on_decline");
 const on_file_upload = require("../lib/utlis/on_file_upload");
@@ -28,9 +27,9 @@ const app = new App({
   console.log("⚡️ Bolt app started");
 })();
 
-app.event("app_mention", async (args) => {
-  on_mention(args);
-});
+//app.event("app_mention", async (args) => {
+//on_mention(args);
+//});
 
 app.action("submit", async (args) => {
   on_submit(args);
@@ -48,10 +47,14 @@ app.action("pronoun", async ({ ack }) => {
   await ack();
 });
 
-app.event("file_shared", async (args) => {
-  on_file_upload(args);
-});
-
 app.action("user_select", async ({ ack }) => {
   await ack();
+});
+
+//app.event("file_shared", async (args) => {
+//on_file_upload(args);
+//});
+
+app.message("", async (args) => {
+  on_file_upload(args);
 });
