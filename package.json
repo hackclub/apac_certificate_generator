@@ -5,10 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "yarn build && nodemon src/index.js",
-    "start": "yarn build && node build/index.js",
-    "build": "babel src -d build",
-    "prod": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "start": "nodemon build/index.js",
+    "build": "nodemon build/index.js",
     "ptest": "node src/test_gen.js && open output.pdf"
   },
   "repository": {
@@ -35,10 +34,13 @@
     "@pdf-lib/fontkit": "^1.1.1",
     "@slack/bolt": "^3.4.0",
     "@slack/web-api": "^6.2.4",
+    "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "dotenv": "^10.0.0",
+    "firebase": "^8.6.3",
     "node-fetch": "^2.6.1",
     "pdf-lib": "^1.16.0",
+    "ramda": "^0.27.1",
     "tape": "^5.3.0"
   }
 }
