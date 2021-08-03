@@ -62,7 +62,7 @@ It also keeps participants in this operation in sync, like:
 
 ## Verification
 
-A big part of us is to make sure that the documents that we issue can be verified in the future.
+A big part of the work is to make sure that the documents that we issue can be verified in the future.
 
 So, we are using basic cryptography, to verify our document.
 
@@ -75,7 +75,7 @@ You simply have to put your pdf file in [#certificate_check channel](https://hac
 
 It does proper Authentication to make sure that only authorized people can create certificates via it!
 
-So,  if you are not from the APAC team and try to mention Certificate Human in a channel, then it will send you a Husky joke! ( so nice of it ).
+So, if you are not from the APAC team and try to mention Certificate Human in a channel, then it will send you a Husky joke! ( so nice of it ).
 
 <img src="https://cloud-24kg85e96-hack-club-bot.vercel.app/0image.png" alt="husky joke image" width="200px"  />
 
