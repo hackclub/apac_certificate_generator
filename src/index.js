@@ -27,9 +27,9 @@ const app = new App({
   console.log("⚡️ Bolt app started");
 })();
 
-//app.event("app_mention", async (args) => {
-//on_mention(args);
-//});
+app.event("app_mention", async (args) => {
+  on_mention(args);
+});
 
 app.action("submit", async (args) => {
   on_submit(args);
