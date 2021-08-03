@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js",
-    "start": "nodemon build/index.js",
-    "build": "nodemon build/index.js",
-    "ptest": "node src/test_gen.js && open output.pdf"
+    "start": "node src/index.js",
+    "pm2start": "npx pm2 kill -a && npx pm2 start src/index.js",
+    "build": "npx pm2 kill -a && npx pm2 start src/index.js",
+    "stop": "npx pm2 kill -a",
+    "dev": "nodemon src/index"
   },
   "repository": {
     "type": "git",
