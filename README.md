@@ -68,7 +68,7 @@ So, we are using basic cryptography, to verify our document. So, any type of mod
 
 You simply have to put your pdf file in [#certificate_check channel](https://hackclub.slack.com/archives/C029YASFA5T/p1628001365003900), and our bot will tell you whether it is a legit copy or not.
 
-<img src="https://cloud-b8mvuqpl2-hack-club-bot.vercel.app/0image.png" alt="verification image" width="500px" />
+<img src="https://cloud-8f1py9d69-hack-club-bot.vercel.app/0image.png" alt="verification image" width="500px" />
 
 
 ## The Memer
