@@ -62,9 +62,9 @@ It also keeps participants in this operation in sync, like:
 
 ## Verification
 
-A big part of the work is to make sure that the documents that we issue can be verified in the future.
+A big part of us is to make sure that the documents that we issue can be verified in the future.
 
-So, we are using basic cryptography, to verify our document.
+So, we are using basic cryptography, to verify our document. So, any type of modification done to these documents will be detectable from our side.
 
 You simply have to put your pdf file in [#certificate_check channel](https://hackclub.slack.com/archives/C029YASFA5T/p1628001365003900), and our bot will tell you whether it is a legit copy or not.
 
@@ -75,7 +75,7 @@ You simply have to put your pdf file in [#certificate_check channel](https://hac
 
 It does proper Authentication to make sure that only authorized people can create certificates via it!
 
-So, if you are not from the APAC team and try to mention Certificate Human in a channel, then it will send you a Husky joke! ( so nice of it ).
+So,  if you are not from the APAC team and try to mention Certificate Human in a channel, then it will send you a Husky joke! ( so nice of it ).
 
 <img src="https://cloud-24kg85e96-hack-club-bot.vercel.app/0image.png" alt="husky joke image" width="200px"  />
 
@@ -86,4 +86,3 @@ Slack Handle: Harsh Bajpai
 <img src="https://cloud-19c4bmt00-hack-club-bot.vercel.app/0image.png" alt="harsh's image" width="250px" /> 
 
 Thanks for reading this document, till then keep hacking and keep the hacker spirit alive!
-
