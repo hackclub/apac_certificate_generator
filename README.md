@@ -42,7 +42,7 @@ So, here is what the flow looks like with it:
 
 <img src="https://cloud-64mh6luqy-hack-club-bot.vercel.app/0image.png" alt="slack command image" width="500x" />
 
-2. Sticker Human makes a certificate from this data and sends it to Athul.
+2. Certificate Human makes a certificate from this data and sends it to Athul.
 
 <img src="https://cloud-dc7ilwb0c-hack-club-bot.vercel.app/0image.png" alt="sign/decline image" width="500px" />
  
