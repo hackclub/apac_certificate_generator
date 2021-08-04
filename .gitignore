@@ -120,5 +120,8 @@ dist
 #build file of the babel transpile for the project
 build
 
-## Output files
+# output files
 *.pdf
+
+# digital assests
+sign.png
